@@ -1,65 +1,89 @@
 package com.example.shoppingmall.Fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.provider.DocumentsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.shoppingmall.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Home#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.util.List;
+
 public class Home extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    final StringBuilder builder = new StringBuilder();
+    String[] items = new String[10];
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    // AsyncTask<doInBackground()의 변수 종류, onProgressUpdate()에서 사용할 변수 종류, onPostExecute()에서 사용할 변수종류>
+    private class CodeCrawling extends AsyncTask<String, Void, Void> {
 
-    public Home() {
-        // Required empty public constructor
+        // 백그라운드 작업이 시작되기 전 호출
+        // 메소드 준비작업을 하는 장소
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        // 실제 동작하는 부분
+        @Override
+        protected Void doInBackground(String... url) {
+
+            try {
+                Document doc = Jsoup.connect(url[0]).get();
+                Elements elements = doc.select("table tbody tr");
+
+                Log.d("TAG", doc.toString());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        // 사용자에게 진행을 알릴때 사용
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+
+        // 백그라운드 작업이 완료 후 결과값을 얻는다.
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Home.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Home newInstance(String param1, String param2) {
-        Home fragment = new Home();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        CodeCrawling c1 = new CodeCrawling();
+
+        c1.execute("https://www.tiobe.com/tiobe-index/");
+
+
+
+
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
