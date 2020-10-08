@@ -3,13 +3,18 @@ package com.example.shoppingmall.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.shoppingmall.Fragment.HomeWidget.HomeRecyclerAdapter;
 import com.example.shoppingmall.R;
 
 import org.jsoup.Jsoup;
@@ -20,21 +25,33 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 public class Home extends Fragment {
+
+    HashMap<String, ArrayList<String>> product = getProduct();
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        HashMap<String, ArrayList<String>> product = getProduct();
+        // 상품 객체 생성
 
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.home_recyclerview);
+        LinearLayoutManager manager = new GridLayoutManager(getActivity(), 2);
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        HomeRecyclerAdapter adapter = new HomeRecyclerAdapter(product);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(manager);
+
+        return view;
     }
 
     // AsyncTask<doInBackground()의 변수 종류, onProgressUpdate()에서 사용할 변수 종류, onPostExecute()에서 사용할 변수종류>
@@ -95,6 +112,8 @@ public class Home extends Fragment {
         CodeCrawling c1 = new CodeCrawling();
 
         try {
+            // CodeCrawling 객체를 생성하고 값을 받아옴
+            // 프로그래밍 언어의 이름들을 저장하고 있는 ArrayList<String>
             name = c1.execute("https://www.tiobe.com/tiobe-index/").get();
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -102,6 +121,7 @@ public class Home extends Fragment {
             e.printStackTrace();
         }
 
+        // 상품의 가격들을 랜덤으로 생성
         for (int i=0; i<20; i++) {
             int temp_price = (int) ((Math.random()*400) + 100);
             String product_price = Integer.toString(temp_price) + "00";
