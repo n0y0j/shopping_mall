@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +19,23 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 public class Home extends Fragment {
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        HashMap<String, ArrayList<String>> product = getProduct();
+
+
+
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
 
     // AsyncTask<doInBackground()의 변수 종류, onProgressUpdate()에서 사용할 변수 종류, onPostExecute()에서 사용할 변수종류>
     //           execute시 사용하는 인자의 변수 종류, 변하는 값의 변수 종류, return 값의 변수 종류
@@ -47,10 +60,10 @@ public class Home extends Fragment {
                 // table -> tbodt -> tr 태그의 정보를 저장
                 Elements elements = doc.select("table tbody tr");
 
-                // 많이 사용되는 언어의 1위부터 10위까지의 정보만 저장
+                // 많이 사용되는 언어의 1위부터 20위까지의 정보만 저장
                 int count = 0;
                 for(Element elem : elements) {
-                    if (count < 10) {
+                    if (count < 20) {
                         String item_temp = elem.select("td").text();
                         // String을 Slicing하여 사용할 정보만 저장함 ( 언어 이름 )
                         String[] item = item_temp.replace("  ", " ").split(" ");
@@ -74,35 +87,32 @@ public class Home extends Fragment {
         }
     }
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    private HashMap<String, ArrayList<String>> getProduct() {
+        HashMap<String, ArrayList<String>> product = new HashMap<String, ArrayList<String>>();
+        ArrayList<String> name = new ArrayList<String>();
+        ArrayList<String> price = new ArrayList<String>();
 
         CodeCrawling c1 = new CodeCrawling();
 
-        ArrayList<String> code = new ArrayList<String>();
         try {
-            code = c1.execute("https://www.tiobe.com/tiobe-index/").get();
+            name = c1.execute("https://www.tiobe.com/tiobe-index/").get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        Log.d("TAG", code.get(0));
+        for (int i=0; i<20; i++) {
+            int temp_price = (int) ((Math.random()*400) + 100);
+            String product_price = Integer.toString(temp_price) + "00";
+            price.add(product_price);
+        }
 
+        product.put("name", name);
+        product.put("price", price);
 
-
-
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return product;
     }
+
+
 }
