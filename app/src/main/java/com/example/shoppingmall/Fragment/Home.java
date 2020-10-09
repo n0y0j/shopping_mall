@@ -77,15 +77,19 @@ public class Home extends Fragment {
                 // table -> tbodt -> tr 태그의 정보를 저장
                 Elements elements = doc.select("table tbody tr");
 
-                // 많이 사용되는 언어의 1위부터 20위까지의 정보만 저장
+                // 많이 사용되는 언어의 1위부터 15위까지의 정보만 저장
                 int count = 0;
                 for(Element elem : elements) {
                     if (count < 20) {
-                        String item_temp = elem.select("td").text();
-                        // String을 Slicing하여 사용할 정보만 저장함 ( 언어 이름 )
-                        String[] item = item_temp.replace("  ", " ").split(" ");
+                        Elements item_temp = elem.select("td");
+                        // 프로그래밍 언어의 이름과 Ratings을 스트링으로 저장
+                        // String을 Slicing하여 사용할 정보만 저장함
+                        String name = item_temp.eq(3).toString().replace("<td>", "").replace("</td>", "");
+                        String ratings = item_temp.eq(4).toString().replace("<td>", "").replace("</td>", "")
+                                .replace(".", "").replace("%", "");
                         count++;
-                        items.add(item[2]);
+                        items.add(name);
+                        items.add(ratings);
                     }
                     else break;
                 }
@@ -106,6 +110,8 @@ public class Home extends Fragment {
 
     private HashMap<String, ArrayList<String>> getProduct() {
         HashMap<String, ArrayList<String>> product = new HashMap<String, ArrayList<String>>();
+        ArrayList<String> item = new ArrayList<String>();
+
         ArrayList<String> name = new ArrayList<String>();
         ArrayList<String> price = new ArrayList<String>();
 
@@ -114,18 +120,19 @@ public class Home extends Fragment {
         try {
             // CodeCrawling 객체를 생성하고 값을 받아옴
             // 프로그래밍 언어의 이름들을 저장하고 있는 ArrayList<String>
-            name = c1.execute("https://www.tiobe.com/tiobe-index/").get();
+            item = c1.execute("https://www.tiobe.com/tiobe-index/").get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        // 상품의 가격들을 랜덤으로 생성
-        for (int i=0; i<20; i++) {
-            int temp_price = (int) ((Math.random()*400) + 100);
-            String product_price = Integer.toString(temp_price) + "00";
-            price.add(product_price);
+       // 상품의 가격들을 랜덤으로 생성
+        for (int i=0; i<item.size(); i+=2) {
+            name.add(item.get(i));
+            int product_price = Integer.parseInt(item.get(i+1)) * 100;
+
+            price.add(Integer.toString(product_price));
         }
 
         product.put("name", name);
