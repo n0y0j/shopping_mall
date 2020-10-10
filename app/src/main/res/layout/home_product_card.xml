@@ -29,6 +29,12 @@
                 android:textSize="20dp"
                 android:text="text" />
 
+            <ImageView
+                android:id="@+id/product_image"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:src="@drawable/c"/>
+
             <TextView
                 android:id="@+id/product_price"
                 android:layout_width="wrap_content"
