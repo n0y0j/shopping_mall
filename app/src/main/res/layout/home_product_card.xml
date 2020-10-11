@@ -20,15 +20,6 @@
             android:orientation="vertical"
             android:gravity="center_vertical|center_horizontal">
 
-            <TextView
-                android:id="@+id/product_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="10dp"
-                android:textSize="20dp"
-                android:text="text" />
-
             <ImageView
                 android:id="@+id/product_image"
                 android:layout_width="match_parent"
@@ -36,10 +27,26 @@
                 android:src="@drawable/c"/>
 
             <TextView
-                android:id="@+id/product_price"
+                android:id="@+id/product_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/sans_bold"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:text="text" />
+
+
+            <TextView
+                android:id="@+id/product_price"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/text_round"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/sans_medium"
                 android:text="text"
                 android:textSize="15dp" />
 
