@@ -1,6 +1,8 @@
 package com.example.shoppingmall;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.graphics.Color;
@@ -19,6 +21,7 @@ import com.gauravk.bubblenavigation.listener.BubbleNavigationChangeListener;
 
 public class MainActivity extends AppCompatActivity {
 
+    Toolbar toolbar;
     FragmentTransaction fragmentTransaction;
     BubbleNavigationLinearView bubbleNavigationLinearView;
 
@@ -34,8 +37,9 @@ public class MainActivity extends AppCompatActivity {
 //            window.setStatusBarColor(Color.TRANSPARENT);
 //        }
 
-        // 액션바 사용 안함
-        getSupportActionBar().hide();
+        // Actionbar를 이미 만들어둔 toolbar로 변경
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         bubbleNavigationLinearView = findViewById(R.id.bottom_nav);
 

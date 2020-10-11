@@ -50,7 +50,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
         if ( product.get("name").get(position).length() > 15 ) holder.name.setTextSize(15);
         holder.name.setText(product.get("name").get(position));
         holder.image.setImageResource(image[position]);
-        holder.price.setText(product.get("price").get(position));
+        holder.price.setText(product.get("price").get(position) + "원");
 
     }
 
