@@ -15,7 +15,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -30,6 +29,8 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity {
 
     public static LinearLayout linearLayout;
+    public static Button buy_btn;
+    public static Button favorite_btn;
     Toolbar toolbar;
     HashMap<String, ArrayList<String>> product = getProduct();
 
@@ -52,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(manager);
 
-        Button favorite_btn = findViewById(R.id.favorite_btn);
-        Button buy_btn = findViewById(R.id.buy_btn);
+        favorite_btn = findViewById(R.id.favorite_btn);
+        buy_btn = findViewById(R.id.buy_btn);
 
         favorite_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,15 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
                 AlertDialog alert = builder.create();
                 alert.show();
-            }
-        });
-
-        buy_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                linearLayout.setVisibility(View.GONE);
-                Intent intent = new Intent(MainActivity.this, BuyActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -139,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                         Elements item_temp = elem.select("td");
                         // 프로그래밍 언어의 이름과 Ratings을 스트링으로 저장
                         // String을 Slicing하여 사용할 정보만 저장함
-                        String name = item_temp.eq(3).toString().replace("<td>", "").replace("</td>", "");
+                        String name = item_temp.eq(3).toString().replace("<td>", "").replace("</td>", "").replace("/", " ");
                         String ratings = item_temp.eq(4).toString().replace("<td>", "").replace("</td>", "")
                                 .replace(".", "").replace("%", "");
                         count++;
