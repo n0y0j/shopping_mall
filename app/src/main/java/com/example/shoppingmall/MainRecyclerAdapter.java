@@ -1,11 +1,15 @@
 package com.example.shoppingmall;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -36,7 +40,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View view = inflater.inflate(R.layout.home_product_card, parent, false);
+        View view = inflater.inflate(R.layout.main_product_card, parent, false);
         MainViewHolder viewHolder = new MainViewHolder(view);
 
         return viewHolder;
