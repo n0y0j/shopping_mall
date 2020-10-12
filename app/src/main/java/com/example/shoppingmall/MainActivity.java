@@ -147,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
             return items;
         }
 
-
         // 백그라운드 작업이 완료 후 결과값을 얻는다.
         @Override
         protected void onPostExecute(ArrayList<String> aVoid) {
