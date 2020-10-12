@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,6 +23,7 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static LinearLayout linearLayout;
     Toolbar toolbar;
     HashMap<String, ArrayList<String>> product = getProduct();
 
@@ -32,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         // Actionbar를 이미 만들어둔 toolbar로 변경
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        linearLayout = findViewById(R.id.linear_layout);
+        linearLayout.setVisibility(View.GONE);
 
         RecyclerView recyclerView = findViewById(R.id.main_recyclerview);
         LinearLayoutManager manager = new GridLayoutManager(getApplicationContext(),2);

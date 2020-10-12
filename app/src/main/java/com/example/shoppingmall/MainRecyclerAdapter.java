@@ -49,18 +49,12 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
         holder.image.setImageResource(image[position]);
         holder.price.setText(product.get("price").get(position) + "원");
 
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(context, HomeProductDetail.class);
-//
-//                intent.putExtra("detail_name", product.get("name").get(position));
-//                intent.putExtra("detail_image", image[position]);
-//                intent.putExtra("detail_price", product.get("price").get(position) + "원");
-//
-//                context.startActivity(intent);
-//            }
-//        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.linearLayout.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
