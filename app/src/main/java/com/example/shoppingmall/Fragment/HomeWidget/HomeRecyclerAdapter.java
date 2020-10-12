@@ -3,16 +3,28 @@ package com.example.shoppingmall.Fragment.HomeWidget;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.shoppingmall.Fragment.Buy;
+import com.example.shoppingmall.Fragment.Favorite;
+import com.example.shoppingmall.Fragment.Home;
+import com.example.shoppingmall.MainActivity;
 import com.example.shoppingmall.R;
+import com.gauravk.bubblenavigation.BubbleNavigationLinearView;
+import com.gauravk.bubblenavigation.listener.BubbleNavigationChangeListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,20 +71,13 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                View DetailView = LayoutInflater.from(context).inflate(R.layout.home_product_detail, null);
+                Intent intent = new Intent(context, HomeProductDetail.class);
 
-                TextView name1 = (TextView) DetailView.findViewById(R.id.product_name2);
-                TextView price1 = (TextView) DetailView.findViewById(R.id.product_price2);
-                ImageView image1 = (ImageView) DetailView.findViewById(R.id.product_image2);
+                intent.putExtra("detail_name", product.get("name").get(position));
+                intent.putExtra("detail_image", image[position]);
+                intent.putExtra("detail_price", product.get("price").get(position) + "원");
 
-                name1.setText(product.get("name").get(position));
-                image1.setImageResource(image[position]);
-                price1.setText(product.get("price").get(position) + "원");
-
-                builder.setView(DetailView);
-                builder.show();
-
+                context.startActivity(intent);
             }
         });
 

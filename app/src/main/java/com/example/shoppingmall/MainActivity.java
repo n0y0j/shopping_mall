@@ -3,22 +3,26 @@ package com.example.shoppingmall;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
-import android.view.View;
 
 
 import com.example.shoppingmall.Fragment.Buy;
 import com.example.shoppingmall.Fragment.Favorite;
 import com.example.shoppingmall.Fragment.Home;
-import com.gauravk.bubblenavigation.BubbleNavigationLinearView;
-import com.gauravk.bubblenavigation.listener.BubbleNavigationChangeListener;
+import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
 
     Toolbar toolbar;
+    ViewPager viewPager;
+    TabLayout tabLayout;
+    Buy buy;
+    Favorite favorite;
+    Home home;
+
     FragmentTransaction fragmentTransaction;
-    BubbleNavigationLinearView bubbleNavigationLinearView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,35 +33,29 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        bubbleNavigationLinearView = findViewById(R.id.bottom_nav);
+        viewPager = findViewById(R.id.view_pager);
+        tabLayout = findViewById(R.id.tab_layout);
 
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, new Home());
-        fragmentTransaction.commit();
+        buy = new Buy();
+        favorite = new Favorite();
+        home = new Home();
 
-        bubbleNavigationLinearView.setNavigationChangeListener(new BubbleNavigationChangeListener() {
-            @Override
-            public void onNavigationChanged(View view, int position) {
+        tabLayout.setupWithViewPager(viewPager);
 
-                switch (position) {
-                    case 0:
-                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, new Home());
-                        fragmentTransaction.commit();
-                        break;
-                    case 1:
-                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, new Favorite());
-                        fragmentTransaction.commit();
-                        break;
-                    case 2:
-                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, new Buy());
-                        fragmentTransaction.commit();
-                        break;
-                }
-            }
-        });
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
+        viewPagerAdapter.addFragment(home, "Home");
+        viewPagerAdapter.addFragment(favorite, "Favorite");
+        viewPagerAdapter.addFragment(buy, "Buy");
+
+        viewPager.setAdapter(viewPagerAdapter);
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.bottom_home_icon);
+        tabLayout.getTabAt(1).setIcon(R.drawable.bottom_favorite_icon);
+        tabLayout.getTabAt(2).setIcon(R.drawable.bottom_buy_icon);
 
     }
+    
+
+
+
 }
