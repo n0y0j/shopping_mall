@@ -11,13 +11,15 @@ public class MainViewHolder extends RecyclerView.ViewHolder{
     TextView name;
     TextView price;
     ImageView image;
+    ImageView favorite;
 
     public MainViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        name = (TextView) itemView.findViewById(R.id.product_name);
-        price = (TextView) itemView.findViewById(R.id.product_price);
-        image = (ImageView) itemView.findViewById(R.id.product_image);
+        name = itemView.findViewById(R.id.product_name);
+        price = itemView.findViewById(R.id.product_price);
+        image = itemView.findViewById(R.id.product_image);
+        favorite = itemView.findViewById(R.id.product_favorite);
     }
 
 }

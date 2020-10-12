@@ -3,6 +3,7 @@ package com.example.shoppingmall;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -60,17 +64,34 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
         holder.image.setImageResource(image[position]);
         holder.price.setText(product.get("price").get(position) + "원");
 
+
+        final MainViewHolder favorite_holder = holder;
+
         // Firestore에 Data가 있는지 확인하고 없으면 삽입
         // 중복 삽입을 방지
-        if (DB.collection("languages").document(product.get("name").get(position)) == null) {
-            data.put("image", image[position]);
-            data.put("price", product.get("price").get(position) + "원");
-            data.put("favorite", false);
-            data.put("buy", false);
-            data.put("time", System.currentTimeMillis());
+        final DocumentReference documentReference = DB.collection("languages").document(product.get("name").get(position));
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.get("favorite") != null) {
+                    String check_favorite = documentSnapshot.get("favorite").toString();
+                    if (check_favorite == "true") {
+                        favorite_holder.favorite.setImageResource(R.drawable.favorite_icon);
+                    }
+                }
 
-            DB.collection("languages").document(product.get("name").get(position)).set(data);
-        }
+                if (documentSnapshot.get("image") == null) {
+                    data.put("image", image[position]);
+                    data.put("price", product.get("price").get(position) + "원");
+                    data.put("favorite", false);
+                    data.put("buy", false);
+                    data.put("time", System.currentTimeMillis());
+
+                    DB.collection("languages").document(product.get("name").get(position)).set(data);
+
+                }
+            }
+        });
 
         // CardView 클릭 시
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +104,9 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
                     public void onClick(View v) {
                         // favorite을 true로 업데이트
                         data.put("favorite", true);
+                        // 장바구니에 넣은 시각
+                        data.put("time", System.currentTimeMillis());
+                        favorite_holder.favorite.setImageResource(R.drawable.favorite_icon);
 
                         DB.collection("languages").document(product.get("name").get(position)).update(data);
 

@@ -11,10 +11,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -55,35 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
         favorite_btn = findViewById(R.id.favorite_btn);
         buy_btn = findViewById(R.id.buy_btn);
-
-        favorite_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-
-                builder.setTitle("장바구니로 이동").setMessage("장바구니로 이동하시겠습니까?");
-
-                builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        linearLayout.setVisibility(View.GONE);
-                        Intent intent = new Intent(MainActivity.this, FavoriteActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-                builder.setNegativeButton("아니요", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        linearLayout.setVisibility(View.GONE);
-                    }
-                });
-
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        });
 
         toolbar.setOnTouchListener(new View.OnTouchListener() {
             @Override
