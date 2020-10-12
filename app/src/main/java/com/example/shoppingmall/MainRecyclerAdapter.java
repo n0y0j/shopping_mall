@@ -3,6 +3,7 @@ package com.example.shoppingmall;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MainViewHolder holder, final int position) {
         if ( product.get("name").get(position).length() > 15 ) holder.name.setTextSize(15);
         holder.name.setText(product.get("name").get(position));
         holder.image.setImageResource(image[position]);
@@ -56,6 +57,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("TAG", product.get("name").get(position));
                 MainActivity.linearLayout.setVisibility(View.VISIBLE);
             }
         });

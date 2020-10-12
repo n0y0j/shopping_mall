@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        linearLayout.setVisibility(View.GONE);
                         Intent intent = new Intent(MainActivity.this, FavoriteActivity.class);
                         startActivity(intent);
                     }
@@ -73,11 +75,36 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        linearLayout.setVisibility(View.GONE);
                     }
                 });
 
                 AlertDialog alert = builder.create();
                 alert.show();
+            }
+        });
+
+        buy_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linearLayout.setVisibility(View.GONE);
+                Intent intent = new Intent(MainActivity.this, BuyActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        toolbar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                    case MotionEvent.ACTION_UP:
+                        linearLayout.setVisibility(View.GONE);
+                        break;
+                    default:
+                        break;
+                }
+                return true;
             }
         });
     }
@@ -168,8 +195,4 @@ public class MainActivity extends AppCompatActivity {
 
         return product;
     }
-    
-
-
-
 }
