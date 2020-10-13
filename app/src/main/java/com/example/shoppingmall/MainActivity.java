@@ -3,12 +3,12 @@ package com.example.shoppingmall;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,9 +17,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jsoup.Jsoup;
@@ -39,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     public static Button favorite_btn;
     Toolbar toolbar;
     HashMap<String, ArrayList<String>> product = getProduct();
+    FirebaseFirestore DB = FirebaseFirestore.getInstance();
+    RecyclerView recyclerView;
+    public static CardView cardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +52,14 @@ public class MainActivity extends AppCompatActivity {
         linearLayout = findViewById(R.id.linear_layout);
         linearLayout.setVisibility(View.GONE);
 
-        RecyclerView recyclerView = findViewById(R.id.main_recyclerview);
+        recyclerView = findViewById(R.id.main_recyclerview);
         LinearLayoutManager manager = new GridLayoutManager(getApplicationContext(),2);
 
         MainRecyclerAdapter adapter = new MainRecyclerAdapter(product);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(manager);
 
+        cardView = findViewById(R.id.main_cardview);
         favorite_btn = findViewById(R.id.favorite_btn);
         buy_btn = findViewById(R.id.buy_btn);
 
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // AsyncTask<doInBackground()의 변수 종류, onProgressUpdate()에서 사용할 변수 종류, onPostExecute()에서 사용할 변수종류>
+    // AsyncTask<doInBackground()의 변수 종류, onProgressUpdate()에서 사용할 ++변수 종류, onPostExecute()에서 사용할 변수종류>
     //           execute시 사용하는 인자의 변수 종류, 변하는 값의 변수 종류, return 값의 변수 종류
     private class CodeCrawling extends AsyncTask<String, Void, ArrayList<String>> {
 

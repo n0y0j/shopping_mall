@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,16 +58,14 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MainViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MainViewHolder holder, final int position) {
 
         // 각 프로그래밍 언어의 CardView를 생성
         if ( product.get("name").get(position).length() > 15 ) holder.name.setTextSize(15);
         holder.name.setText(product.get("name").get(position));
         holder.image.setImageResource(image[position]);
         holder.price.setText(product.get("price").get(position) + "원");
-
-
-        final MainViewHolder favorite_holder = holder;
+        holder.favorite.setImageResource(R.drawable.unfavorite_icon);
 
         // Firestore에 Data가 있는지 확인하고 없으면 삽입
         // 중복 삽입을 방지
@@ -73,13 +73,6 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.get("favorite") != null) {
-                    String check_favorite = documentSnapshot.get("favorite").toString();
-                    if (check_favorite == "true") {
-                        favorite_holder.favorite.setImageResource(R.drawable.favorite_icon);
-                    }
-                }
-
                 if (documentSnapshot.get("image") == null) {
                     data.put("image", image[position]);
                     data.put("price", product.get("price").get(position) + "원");
@@ -88,7 +81,13 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
                     data.put("time", System.currentTimeMillis());
 
                     DB.collection("languages").document(product.get("name").get(position)).set(data);
+                }
 
+                if (documentSnapshot.get("favorite") != null) {
+                    if (documentSnapshot.get("favorite").toString() == "true") {
+                        holder.favorite.setImageResource(R.drawable.favorite_icon);
+
+                    }
                 }
             }
         });
@@ -106,7 +105,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
                         data.put("favorite", true);
                         // 장바구니에 넣은 시각
                         data.put("time", System.currentTimeMillis());
-                        favorite_holder.favorite.setImageResource(R.drawable.favorite_icon);
+                        holder.favorite.setImageResource(R.drawable.favorite_icon);
 
                         DB.collection("languages").document(product.get("name").get(position)).update(data);
 
