@@ -22,6 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class FavoriteActivity extends AppCompatActivity {
 
@@ -48,11 +49,28 @@ public class FavoriteActivity extends AppCompatActivity {
         },2000);
 
         Button backButton = findViewById(R.id.back_btn);
+        Button buyButton = findViewById(R.id.favorite_buy_btn);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        buyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, Object> data = new HashMap<>();
+                // buy를 true로 업데이트
+                data.put("buy", true);
+
+                for (int i=0; i < product.get("name").size(); i++) {
+                    DB.collection("languages").document(product.get("name").get(i)).update(data);
+                }
+
+                Intent intent = new Intent(getApplicationContext(), BuyActivity.class);
+                startActivity(intent);
             }
         });
 
