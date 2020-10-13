@@ -1,5 +1,6 @@
 package com.example.shoppingmall;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,7 +35,6 @@ public class FavoriteActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
-
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -73,7 +73,6 @@ public class FavoriteActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     private HashMap<String, ArrayList<String>> getProduct() {
@@ -111,4 +110,5 @@ public class FavoriteActivity extends AppCompatActivity {
 
         return product;
     }
+
 }

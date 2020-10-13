@@ -58,7 +58,7 @@
                     android:textSize="20dp" />
 
                 <Button
-                    android:id="@+id/buy_btn"
+                    android:id="@+id/favorite_delete_btn"
                     android:layout_width="50dp"
                     android:layout_height="30dp"
                     android:background="@drawable/click_button"
