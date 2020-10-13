@@ -56,28 +56,6 @@
         android:background="#FFFFFF"
         android:gravity="center">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sans_medium"
-                android:textSize="20dp"
-                android:text="합계:"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sans_bold"
-                android:layout_marginLeft="5dp"
-                android:textSize="20dp"
-                android:text="100원"/>
-
-        </LinearLayout>
-
         <Button
             android:id="@+id/buy_btn"
             android:layout_width="120dp"
