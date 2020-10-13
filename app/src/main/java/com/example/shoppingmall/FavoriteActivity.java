@@ -1,19 +1,44 @@
 package com.example.shoppingmall;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FavoriteActivity extends AppCompatActivity {
+
+    FirebaseFirestore DB = FirebaseFirestore.getInstance();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
 
         Button backButton = findViewById(R.id.back_btn);
+        HashMap<String, ArrayList<String>> product = getProduct();
+
+        RecyclerView recyclerView = findViewById(R.id.favorite_recyclerview);
+        Log.d("Asd", Integer.toString(product.size()));
+        FavoriteRecyclerAdapter adapter = new FavoriteRecyclerAdapter(product);
+        LinearLayoutManager manager = new GridLayoutManager(getApplicationContext(),1);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(manager);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -22,5 +47,40 @@ public class FavoriteActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private HashMap<String, ArrayList<String>> getProduct() {
+        final HashMap<String, ArrayList<String>> product = new HashMap<String, ArrayList<String>>();
+        final ArrayList<String> name = new ArrayList<String>();
+        final ArrayList<String> price = new ArrayList<String>();
+        final ArrayList<String> image = new ArrayList<String>();
+
+        DB.collection("languages").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        if (document.getData().get("favorite").toString() == "true") {
+                            String product_name = document.getId();
+                            String product_price = document.getData().get("price").toString();
+                            String product_image = document.getData().get("image").toString();
+
+                            name.add(product_name);
+                            price.add(product_price);
+                            image.add(product_image);
+
+                            Log.d("TAG", document.getId() + " = > " + document.getData().get("favorite"));
+                        }
+                    }
+                    product.put("name", name);
+                    product.put("price", price);
+                    product.put("image", image);
+
+                }
+            }
+        });
+
+        return product;
     }
 }
