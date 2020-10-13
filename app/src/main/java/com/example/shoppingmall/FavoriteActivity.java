@@ -1,6 +1,5 @@
 package com.example.shoppingmall;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -110,5 +109,4 @@ public class FavoriteActivity extends AppCompatActivity {
 
         return product;
     }
-
 }

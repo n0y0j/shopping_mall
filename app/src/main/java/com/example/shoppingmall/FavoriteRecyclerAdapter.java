@@ -2,8 +2,6 @@ package com.example.shoppingmall;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +22,6 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteViewHo
     private HashMap<String, ArrayList<String>> product;
     Context context;
     Button deleteButton;
-
-
-
 
     public FavoriteRecyclerAdapter(HashMap<String, ArrayList<String>> product) {
         this.product = product;

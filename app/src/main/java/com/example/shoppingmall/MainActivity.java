@@ -1,17 +1,14 @@
 package com.example.shoppingmall;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -163,5 +160,16 @@ public class MainActivity extends AppCompatActivity {
         product.put("price", price);
 
         return product;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        recyclerView = findViewById(R.id.main_recyclerview);
+        LinearLayoutManager manager = new GridLayoutManager(getApplicationContext(),2);
+
+        MainRecyclerAdapter adapter = new MainRecyclerAdapter(product);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(manager);
     }
 }
