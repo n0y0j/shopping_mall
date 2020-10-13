@@ -78,7 +78,6 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
                     data.put("price", product.get("price").get(position) + "원");
                     data.put("favorite", false);
                     data.put("buy", false);
-                    data.put("time", System.currentTimeMillis());
 
                     DB.collection("languages").document(product.get("name").get(position)).set(data);
                 }
@@ -101,13 +100,13 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
                 MainActivity.favorite_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Map<String, Object> data = new HashMap<>();
                         // favorite을 true로 업데이트
                         data.put("favorite", true);
-                        // 장바구니에 넣은 시각
-                        data.put("time", System.currentTimeMillis());
+
                         holder.favorite.setImageResource(R.drawable.favorite_icon);
 
-                        DB.collection("languages").document(product.get("name").get(position)).update(data);
+                        DB.collection("languages").document(holder.name.getText().toString()).update(data);
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
@@ -138,6 +137,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
                 MainActivity.buy_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Map<String, Object> data = new HashMap<>();
                         // buy을 true로 업데이트
                         data.put("buy", true);
 

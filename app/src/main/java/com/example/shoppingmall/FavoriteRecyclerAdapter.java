@@ -42,9 +42,10 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteViewHo
 
     @Override
     public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
+
         holder.name.setText(product.get("name").get(position));
-        holder.image.setImageResource(Integer.getInteger(product.get("image").get(position)));
-        holder.price.setText(product.get("price").get(position) + "원");
+        holder.image.setImageResource(Integer.parseInt(product.get("image").get(position)));
+        holder.price.setText(product.get("price").get(position));
     }
 
     @Override

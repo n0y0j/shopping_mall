@@ -1,6 +1,8 @@
 package com.example.shoppingmall;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,21 +26,28 @@ import java.util.HashMap;
 public class FavoriteActivity extends AppCompatActivity {
 
     FirebaseFirestore DB = FirebaseFirestore.getInstance();
+    HashMap<String, ArrayList<String>> product = getProduct();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
 
-        Button backButton = findViewById(R.id.back_btn);
-        HashMap<String, ArrayList<String>> product = getProduct();
 
-        RecyclerView recyclerView = findViewById(R.id.favorite_recyclerview);
-        Log.d("Asd", Integer.toString(product.size()));
-        FavoriteRecyclerAdapter adapter = new FavoriteRecyclerAdapter(product);
-        LinearLayoutManager manager = new GridLayoutManager(getApplicationContext(),1);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(manager);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                RecyclerView recyclerView = findViewById(R.id.favorite_recyclerview);
+                FavoriteRecyclerAdapter adapter = new FavoriteRecyclerAdapter(product);
+                LinearLayoutManager manager = new GridLayoutManager(getApplicationContext(),1);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(manager);
+            }
+        },2000);
+
+        Button backButton = findViewById(R.id.back_btn);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +79,7 @@ public class FavoriteActivity extends AppCompatActivity {
                             price.add(product_price);
                             image.add(product_image);
 
-                            Log.d("TAG", document.getId() + " = > " + document.getData().get("favorite"));
+                            Log.d("TAG", document.getId() + " = > " + document.getData().get("image"));
                         }
                     }
                     product.put("name", name);
@@ -80,6 +89,7 @@ public class FavoriteActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         return product;
     }
