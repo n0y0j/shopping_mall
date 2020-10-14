@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:columnCount="1"
+    android:rowCount="3">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar_layout"
@@ -34,4 +36,40 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-</LinearLayout>
+    <FrameLayout
+        android:layout_below="@+id/appbar_layout"
+        android:background="#EDE7F6"
+        android:layout_width="match_parent"
+        android:layout_height="540dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/buy_recyclerview"
+            android:layout_gravity="center"
+            android:layout_width="340dp"
+            android:layout_height="530dp" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/buy_buy_btn"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:paddingLeft="10dp"
+            android:background="@drawable/click_button"
+            android:drawableLeft="@drawable/detail_buy_icon"
+            android:textColor="#FFFFFF"
+            android:text="구매"
+            android:fontFamily="@font/sans_medium"
+            android:layout_marginLeft="15dp"/>
+    </LinearLayout>
+
+
+</GridLayout>
+

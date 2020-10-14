@@ -57,6 +57,18 @@
         android:gravity="center">
 
         <Button
+            android:id="@+id/favorite_home_btn"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:paddingLeft="10dp"
+            android:background="@drawable/click_button"
+            android:drawableLeft="@drawable/detail_home_icon"
+            android:textColor="#FFFFFF"
+            android:text="홈"
+            android:fontFamily="@font/sans_medium"
+            android:layout_marginRight="15dp"/>
+
+        <Button
             android:id="@+id/favorite_buy_btn"
             android:layout_width="120dp"
             android:layout_height="40dp"

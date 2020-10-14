@@ -32,6 +32,7 @@ public class FavoriteActivity extends AppCompatActivity {
     FirebaseFirestore DB = FirebaseFirestore.getInstance();
     HashMap<String, ArrayList<String>> product = getProduct();
     Button buyButton;
+    Button homeButton;
     RecyclerView recyclerView;
 
 
@@ -54,11 +55,20 @@ public class FavoriteActivity extends AppCompatActivity {
 
         Button backButton = findViewById(R.id.back_btn);
         buyButton = findViewById(R.id.favorite_buy_btn);
+        homeButton = findViewById(R.id.favorite_home_btn);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
         });
 
