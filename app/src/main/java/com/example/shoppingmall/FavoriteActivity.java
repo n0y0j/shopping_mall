@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +31,8 @@ public class FavoriteActivity extends AppCompatActivity {
 
     FirebaseFirestore DB = FirebaseFirestore.getInstance();
     HashMap<String, ArrayList<String>> product = getProduct();
+    Button buyButton;
+    RecyclerView recyclerView;
 
 
     @Override
@@ -39,7 +44,7 @@ public class FavoriteActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                RecyclerView recyclerView = findViewById(R.id.favorite_recyclerview);
+                recyclerView = findViewById(R.id.favorite_recyclerview);
                 FavoriteRecyclerAdapter adapter = new FavoriteRecyclerAdapter(product);
                 LinearLayoutManager manager = new GridLayoutManager(getApplicationContext(),1);
                 recyclerView.setAdapter(adapter);
@@ -48,7 +53,7 @@ public class FavoriteActivity extends AppCompatActivity {
         },2000);
 
         Button backButton = findViewById(R.id.back_btn);
-        Button buyButton = findViewById(R.id.favorite_buy_btn);
+        buyButton = findViewById(R.id.favorite_buy_btn);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,12 +65,23 @@ public class FavoriteActivity extends AppCompatActivity {
         buyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, Object> data = new HashMap<>();
-                // buy를 true로 업데이트
-                data.put("buy", true);
 
-                for (int i=0; i < product.get("name").size(); i++) {
-                    DB.collection("languages").document(product.get("name").get(i)).update(data);
+                if ( recyclerView.getChildCount() != 0 ) {
+                    for (int i=0; i<recyclerView.getChildCount(); i++) {
+                        View card = recyclerView.getChildAt(i);
+                        CheckBox buyCheck = card.findViewById(R.id.favorite_check);
+                        TextView productTemp = card.findViewById(R.id.product_name);
+                        String productName = productTemp.getText().toString();
+
+
+                        if (buyCheck.isChecked() == true) {
+                            Map<String, Object> data = new HashMap<>();
+                            // buy를 true로 업데이트
+                            data.put("buy", true);
+                            DB.collection("languages").document(productName).update(data);
+
+                        }
+                    }
                 }
 
                 Intent intent = new Intent(getApplicationContext(), BuyActivity.class);
