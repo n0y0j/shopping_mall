@@ -79,7 +79,7 @@ public class FavoriteActivity extends AppCompatActivity {
                 if ( recyclerView.getChildCount() != 0 ) {
                     for (int i=0; i<recyclerView.getChildCount(); i++) {
                         View card = recyclerView.getChildAt(i);
-                        CheckBox buyCheck = card.findViewById(R.id.favorite_check);
+                        CheckBox buyCheck = card.findViewById(R.id.check);
                         TextView productTemp = card.findViewById(R.id.product_name);
                         String productName = productTemp.getText().toString();
 

@@ -57,6 +57,25 @@
         android:background="#FFFFFF"
         android:gravity="center">
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sans_medium"
+            android:gravity="left"
+            android:text="합계: "
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/total_price"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sans_bold"
+            android:gravity="right"
+            android:text="1000000원"
+            android:textSize="20dp"/>
+
+
         <Button
             android:id="@+id/buy_buy_btn"
             android:layout_width="120dp"

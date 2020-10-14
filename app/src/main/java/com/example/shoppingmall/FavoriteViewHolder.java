@@ -21,6 +21,6 @@ public class FavoriteViewHolder extends RecyclerView.ViewHolder {
         name = itemView.findViewById(R.id.product_name);
         price = itemView.findViewById(R.id.product_price);
         image = itemView.findViewById(R.id.product_image);
-        check = itemView.findViewById(R.id.favorite_check);
+        check = itemView.findViewById(R.id.check);
     }
 }

@@ -71,7 +71,7 @@
 
 
                 <CheckBox
-                    android:id="@+id/favorite_check"
+                    android:id="@+id/check"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
