@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,7 @@ public class BuyRecyclerAdapter extends RecyclerView.Adapter<FavoriteViewHolder>
     FirebaseFirestore DB = FirebaseFirestore.getInstance();
     private HashMap<String, ArrayList<String>> product;
     Context context;
+    int sum = 0;
 
     BuyRecyclerAdapter(HashMap<String, ArrayList<String>> product) {
         this.product = product;
@@ -48,6 +50,34 @@ public class BuyRecyclerAdapter extends RecyclerView.Adapter<FavoriteViewHolder>
         holder.name.setText(product.get("name").get(position));
         holder.image.setImageResource(Integer.parseInt(product.get("image").get(position)));
         holder.price.setText(product.get("price").get(position));
+        holder.check.setChecked(false);
+
+        holder.check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Map<String, Object> data = new HashMap<>();
+                if (isChecked) {
+                    data.put("check", true);
+                    DB.collection("languages").document(holder.name.getText().toString()).update(data);
+
+                    String productPrice = holder.price.getText().toString().replace("원", "");
+                    int price = Integer.parseInt(productPrice);
+
+                    sum += price;
+                    BuyActivity.totalPrice.setText(Integer.toString(sum) + "원");
+                }
+                else {
+                    data.put("check", false);
+                    DB.collection("languages").document(holder.name.getText().toString()).update(data);
+
+                    String productPrice = holder.price.getText().toString().replace("원", "");
+                    int price = Integer.parseInt(productPrice);
+
+                    sum -= price;
+                    BuyActivity.totalPrice.setText(Integer.toString(sum) + "원");
+                }
+            }
+        });
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override

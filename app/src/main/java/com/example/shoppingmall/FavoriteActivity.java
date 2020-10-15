@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,10 +19,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +40,7 @@ public class FavoriteActivity extends AppCompatActivity {
     Button buyButton;
     Button homeButton;
     RecyclerView recyclerView;
+    LinearLayoutManager manager;
 
 
     @Override
@@ -41,17 +48,18 @@ public class FavoriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
 
-        Handler handler = new Handler();
+        final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 recyclerView = findViewById(R.id.favorite_recyclerview);
-                FavoriteRecyclerAdapter adapter = new FavoriteRecyclerAdapter(product);
-                LinearLayoutManager manager = new GridLayoutManager(getApplicationContext(),1);
+                final FavoriteRecyclerAdapter adapter = new FavoriteRecyclerAdapter(product);
+                manager = new GridLayoutManager(getApplicationContext(),1);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(manager);
+
             }
-        },2000);
+        },1000);
 
         Button backButton = findViewById(R.id.back_btn);
         buyButton = findViewById(R.id.favorite_buy_btn);
@@ -75,22 +83,22 @@ public class FavoriteActivity extends AppCompatActivity {
         buyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if ( product.get("name").size() != 0 ) {
+                    for (int i=0; i<product.get("name").size(); i++) {
 
-                if ( recyclerView.getChildCount() != 0 ) {
-                    for (int i=0; i<recyclerView.getChildCount(); i++) {
-                        View card = recyclerView.getChildAt(i);
-                        CheckBox buyCheck = card.findViewById(R.id.check);
-                        TextView productTemp = card.findViewById(R.id.product_name);
-                        String productName = productTemp.getText().toString();
-
-
-                        if (buyCheck.isChecked() == true) {
-                            Map<String, Object> data = new HashMap<>();
-                            // buy를 true로 업데이트
-                            data.put("buy", true);
-                            DB.collection("languages").document(productName).update(data);
-
-                        }
+                        DocumentReference documentReference = DB.collection("languages").document(product.get("name").get(i));
+                        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if (documentSnapshot.get("check").toString() == "true") {
+                                    Map<String, Object> data = new HashMap<>();
+                                    // buy를 true로 업데이트z
+                                    data.put("check", false);
+                                    data.put("buy", true);
+                                    DB.collection("languages").document(documentSnapshot.getId()).update(data);
+                                }
+                            }
+                        });
                     }
                 }
 
@@ -98,7 +106,9 @@ public class FavoriteActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
+
 
     private HashMap<String, ArrayList<String>> getProduct() {
         final HashMap<String, ArrayList<String>> product = new HashMap<String, ArrayList<String>>();

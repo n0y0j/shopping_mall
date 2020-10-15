@@ -13,6 +13,7 @@ public class FavoriteViewHolder extends RecyclerView.ViewHolder {
     TextView name;
     TextView price;
     ImageView image;
+    CheckBox check;
 
     public FavoriteViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -20,5 +21,6 @@ public class FavoriteViewHolder extends RecyclerView.ViewHolder {
         name = itemView.findViewById(R.id.product_name);
         price = itemView.findViewById(R.id.product_price);
         image = itemView.findViewById(R.id.product_image);
+        check = itemView.findViewById(R.id.check);
     }
 }

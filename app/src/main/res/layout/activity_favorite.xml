@@ -45,7 +45,7 @@
             android:id="@+id/favorite_recyclerview"
             android:layout_gravity="center"
             android:layout_width="340dp"
-            android:layout_height="530dp" />
+            android:layout_height="match_parent" />
     </FrameLayout>
 
     <LinearLayout

@@ -78,6 +78,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
                     data.put("price", product.get("price").get(position) + "원");
                     data.put("favorite", false);
                     data.put("buy", false);
+                    data.put("check", false);
 
                     DB.collection("languages").document(product.get("name").get(position)).set(data);
                 }

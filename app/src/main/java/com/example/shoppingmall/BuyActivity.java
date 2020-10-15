@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ public class BuyActivity extends AppCompatActivity {
     FirebaseFirestore DB = FirebaseFirestore.getInstance();
     HashMap<String, ArrayList<String>> product = getProduct();
     RecyclerView recyclerView;
+    public static TextView totalPrice;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class BuyActivity extends AppCompatActivity {
 
         Button backButton = findViewById(R.id.back_btn);
         Button buyButton = findViewById(R.id.buy_buy_btn);
+        totalPrice = findViewById(R.id.total_price);
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -50,47 +53,8 @@ public class BuyActivity extends AppCompatActivity {
                 LinearLayoutManager manager = new GridLayoutManager(getApplicationContext(),1);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(manager);
-
-                // CheckBox의 Check 여부를 확인하여 가격을 바꿈
-                // ViewHolder를 만드는데 시간이 소요되기 때문에 조금 지연시킨 후 실행
-                // 그렇지 않고 바로 실행하면 null
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        final TextView totalPrice = findViewById(R.id.total_price);
-
-                        if ( recyclerView.getChildCount() != 0 ) {
-                            final int[] sum = {0};
-                            for (int i=0; i<recyclerView.getChildCount(); i++) {
-                                View card = recyclerView.getChildAt(i);
-                                final CheckBox buyCheck = card.findViewById(R.id.check);
-                                TextView productTemp = card.findViewById(R.id.product_price);
-                                final String productPrice = productTemp.getText().toString().replace("원", "");
-
-                                buyCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                    @Override
-                                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                        if (isChecked) {
-                                            int price = Integer.parseInt(productPrice);
-                                            Log.d("asd", Integer.toString(price));
-                                            sum[0] += price;
-                                            totalPrice.setText(Integer.toString(sum[0]));
-                                        }
-                                        else {
-                                            int price = Integer.parseInt(productPrice);
-                                            sum[0] -= price;
-                                            totalPrice.setText(Integer.toString(sum[0]));
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }, 100);
-
-
             }
-        },2000);
+        },1000);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +62,7 @@ public class BuyActivity extends AppCompatActivity {
                 for (int i=0; i<product.get("name").size(); i++) {
                     Map<String, Object> data = new HashMap<>();
                     data.put("buy", false);
+                    data.put("check", false);
 
                     DB.collection("languages").document(product.get("name").get(i)).update(data);
                 }
@@ -109,8 +74,17 @@ public class BuyActivity extends AppCompatActivity {
         buyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                for (int i=0; i<product.get("name").size(); i++) {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("buy", false);
+                    data.put("check", false);
+
+                    DB.collection("languages").document(product.get("name").get(i)).update(data);
+                }
+
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
+                Toast.makeText(getApplicationContext(), "구매가 완료되었습니다", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -137,7 +111,7 @@ public class BuyActivity extends AppCompatActivity {
                             price.add(product_price);
                             image.add(product_image);
 
-//                            Log.d("TAG", document.getId() + " = > " + document.getData().get("image"));
+                            Log.d("TAG", document.getId() + " = > " + document.getData().get("image"));
                         }
                     }
                     product.put("name", name);
