@@ -25,6 +25,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class BuyActivity extends AppCompatActivity {
 
@@ -65,8 +66,6 @@ public class BuyActivity extends AppCompatActivity {
                                 final CheckBox buyCheck = card.findViewById(R.id.check);
                                 TextView productTemp = card.findViewById(R.id.product_price);
                                 final String productPrice = productTemp.getText().toString().replace("원", "");
-                                Log.d("asd", productPrice);
-
 
                                 buyCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                                     @Override
@@ -96,6 +95,13 @@ public class BuyActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                for (int i=0; i<product.get("name").size(); i++) {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("buy", false);
+
+                    DB.collection("languages").document(product.get("name").get(i)).update(data);
+                }
+
                 finish();
             }
         });
@@ -131,7 +137,7 @@ public class BuyActivity extends AppCompatActivity {
                             price.add(product_price);
                             image.add(product_image);
 
-                            Log.d("TAG", document.getId() + " = > " + document.getData().get("image"));
+//                            Log.d("TAG", document.getId() + " = > " + document.getData().get("image"));
                         }
                     }
                     product.put("name", name);

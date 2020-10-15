@@ -121,7 +121,7 @@ public class FavoriteActivity extends AppCompatActivity {
                             price.add(product_price);
                             image.add(product_image);
 
-                            Log.d("TAG", document.getId() + " = > " + document.getData().get("image"));
+//                            Log.d("TAG", document.getId() + " = > " + document.getData().get("image"));
                         }
                     }
                     product.put("name", name);

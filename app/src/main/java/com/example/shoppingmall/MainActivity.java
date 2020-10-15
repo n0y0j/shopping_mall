@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // 상품의 가격들을 랜덤으로 생성
+        // 상품의 가격들을 생성, 프로그래밍 언어의 Rating * 100
         for (int i=0; i<item.size(); i+=2) {
             name.add(item.get(i));
             int product_price = Integer.parseInt(item.get(i+1)) * 100;

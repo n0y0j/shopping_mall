@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:columnCount="1"
-    android:rowCount="3">
+    android:rowCount="4">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar_layout"
@@ -41,14 +41,40 @@
         android:layout_below="@+id/appbar_layout"
         android:background="#EDE7F6"
         android:layout_width="match_parent"
-        android:layout_height="540dp">
-
+        android:layout_height="300dp">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/buy_recyclerview"
-            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="top|center_horizontal"
             android:layout_width="340dp"
-            android:layout_height="530dp" />
+            android:layout_height="300dp" />"
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:gravity="start"
+        android:background="#EDE7F6">
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:ems="10"
+            android:hint="주소를 입력하세요"
+            android:inputType="textPersonName"/>
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:ems="10"
+            android:hint="휴대폰 번호를 입력하세요"
+            android:inputType="textPersonName"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
