@@ -43,7 +43,7 @@ public class BuyRecyclerAdapter extends RecyclerView.Adapter<FavoriteViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final FavoriteViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final FavoriteViewHolder holder, final int position) {
         if ( product.get("name").get(position).length() > 15 ) holder.name.setTextSize(15);
         holder.name.setText(product.get("name").get(position));
         holder.image.setImageResource(Integer.parseInt(product.get("image").get(position)));

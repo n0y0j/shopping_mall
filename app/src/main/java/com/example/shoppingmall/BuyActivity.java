@@ -1,12 +1,14 @@
 package com.example.shoppingmall;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,15 +40,56 @@ public class BuyActivity extends AppCompatActivity {
         Button backButton = findViewById(R.id.back_btn);
         Button buyButton = findViewById(R.id.buy_buy_btn);
 
-        Handler handler = new Handler();
+        final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 recyclerView = findViewById(R.id.buy_recyclerview);
-                FavoriteRecyclerAdapter adapter = new FavoriteRecyclerAdapter(product);
+                BuyRecyclerAdapter adapter = new BuyRecyclerAdapter(product);
                 LinearLayoutManager manager = new GridLayoutManager(getApplicationContext(),1);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(manager);
+
+                // CheckBox의 Check 여부를 확인하여 가격을 바꿈
+                // ViewHolder를 만드는데 시간이 소요되기 때문에 조금 지연시킨 후 실행
+                // 그렇지 않고 바로 실행하면 null
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        final TextView totalPrice = findViewById(R.id.total_price);
+
+                        if ( recyclerView.getChildCount() != 0 ) {
+                            final int[] sum = {0};
+                            for (int i=0; i<recyclerView.getChildCount(); i++) {
+                                View card = recyclerView.getChildAt(i);
+                                final CheckBox buyCheck = card.findViewById(R.id.check);
+                                TextView productTemp = card.findViewById(R.id.product_price);
+                                final String productPrice = productTemp.getText().toString().replace("원", "");
+                                Log.d("asd", productPrice);
+
+
+                                buyCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                    @Override
+                                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                        if (isChecked) {
+                                            int price = Integer.parseInt(productPrice);
+                                            Log.d("asd", Integer.toString(price));
+                                            sum[0] += price;
+                                            totalPrice.setText(Integer.toString(sum[0]));
+                                        }
+                                        else {
+                                            int price = Integer.parseInt(productPrice);
+                                            sum[0] -= price;
+                                            totalPrice.setText(Integer.toString(sum[0]));
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }, 100);
+
+
             }
         },2000);
 
@@ -102,4 +145,5 @@ public class BuyActivity extends AppCompatActivity {
 
         return product;
     }
+
 }

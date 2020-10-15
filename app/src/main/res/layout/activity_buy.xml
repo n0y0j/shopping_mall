@@ -37,6 +37,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
+        android:id="@+id/recycler_layout"
         android:layout_below="@+id/appbar_layout"
         android:background="#EDE7F6"
         android:layout_width="match_parent"
@@ -72,7 +73,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/sans_bold"
             android:gravity="right"
-            android:text="1000000원"
+            android:text="0원"
             android:textSize="20dp"/>
 
 
