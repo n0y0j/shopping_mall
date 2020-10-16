@@ -2,7 +2,6 @@ package com.example.shoppingmall;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,8 +12,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -33,9 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public static Button favorite_btn;
     Toolbar toolbar;
     HashMap<String, ArrayList<String>> product = getProduct();
-    FirebaseFirestore DB = FirebaseFirestore.getInstance();
     RecyclerView recyclerView;
-    public static CardView cardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(manager);
 
-        cardView = findViewById(R.id.main_cardview);
         favorite_btn = findViewById(R.id.favorite_btn);
         buy_btn = findViewById(R.id.buy_btn);
 
@@ -132,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
     private HashMap<String, ArrayList<String>> getProduct() {
         HashMap<String, ArrayList<String>> product = new HashMap<String, ArrayList<String>>();
         ArrayList<String> item = new ArrayList<String>();
-
         ArrayList<String> name = new ArrayList<String>();
         ArrayList<String> price = new ArrayList<String>();
 

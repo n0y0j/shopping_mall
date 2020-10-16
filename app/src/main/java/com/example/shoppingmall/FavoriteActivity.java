@@ -102,8 +102,14 @@ public class FavoriteActivity extends AppCompatActivity {
                     }
                 }
 
-                Intent intent = new Intent(getApplicationContext(), BuyActivity.class);
-                startActivity(intent);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(getApplicationContext(), BuyActivity.class);
+                        startActivity(intent);
+                    }
+                },200);
             }
         });
 

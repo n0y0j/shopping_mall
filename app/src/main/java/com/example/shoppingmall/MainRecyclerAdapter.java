@@ -3,15 +3,13 @@ package com.example.shoppingmall;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,6 +27,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
     FirebaseFirestore DB = FirebaseFirestore.getInstance();
     Map<String, Object> data = new HashMap<>();
     Context context;
+    int row_index = -1;
 
     private HashMap<String, ArrayList<String>> product;
     // 프로그래밍 언어들의 로고가 순위별로 정렬
@@ -59,7 +58,6 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, final int position) {
-
         // 각 프로그래밍 언어의 CardView를 생성
         if ( product.get("name").get(position).length() > 15 ) holder.name.setTextSize(15);
         holder.name.setText(product.get("name").get(position));
@@ -96,6 +94,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                row_index = position;
                 MainActivity.linearLayout.setVisibility(View.VISIBLE);
 
                 MainActivity.favorite_btn.setOnClickListener(new View.OnClickListener() {
@@ -149,8 +148,18 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
                         context.startActivity(intent);
                     }
                 });
+                notifyDataSetChanged();
             }
         });
+
+
+        if (row_index == position) {
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#D5D8DC"));
+        }
+        else {
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+
+        }
     }
 
     @Override
