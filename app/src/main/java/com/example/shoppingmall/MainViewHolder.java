@@ -26,4 +26,6 @@ public class MainViewHolder extends RecyclerView.ViewHolder{
         favorite = itemView.findViewById(R.id.product_favorite);
     }
 
+
+
 }

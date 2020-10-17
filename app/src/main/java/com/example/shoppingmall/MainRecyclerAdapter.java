@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -27,7 +29,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
     FirebaseFirestore DB = FirebaseFirestore.getInstance();
     Map<String, Object> data = new HashMap<>();
     Context context;
-    int row_index = -1;
+    List<CardView> cardViewList = new ArrayList<>();
 
     private HashMap<String, ArrayList<String>> product;
     // 프로그래밍 언어들의 로고가 순위별로 정렬
@@ -64,6 +66,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
         holder.image.setImageResource(image[position]);
         holder.price.setText(product.get("price").get(position) + "원");
         holder.favorite.setImageResource(R.drawable.unfavorite_icon);
+        cardViewList.add(holder.cardView);
 
         // Firestore에 Data가 있는지 확인하고 없으면 삽입
         // 중복 삽입을 방지
@@ -94,7 +97,14 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                row_index = position;
+
+                // Card가 선택됬을 시 배경을 바꿔줌
+                for (CardView cardView : cardViewList) {
+                    // 선택된 Card 말고는 모두 흰색
+                    cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+                }
+                holder.cardView.setCardBackgroundColor(Color.parseColor("#D5D8DC"));
+
                 MainActivity.linearLayout.setVisibility(View.VISIBLE);
 
                 MainActivity.favorite_btn.setOnClickListener(new View.OnClickListener() {
@@ -148,18 +158,9 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
                         context.startActivity(intent);
                     }
                 });
-                notifyDataSetChanged();
             }
         });
 
-
-        if (row_index == position) {
-            holder.cardView.setCardBackgroundColor(Color.parseColor("#D5D8DC"));
-        }
-        else {
-            holder.cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
-
-        }
     }
 
     @Override
