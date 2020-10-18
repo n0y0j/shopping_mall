@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,8 @@ public class BuyActivity extends AppCompatActivity {
     HashMap<String, ArrayList<String>> product = getProduct();
     RecyclerView recyclerView;
     public static TextView totalPrice;
+    EditText address;
+    EditText phone;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +46,9 @@ public class BuyActivity extends AppCompatActivity {
         Button backButton = findViewById(R.id.back_btn);
         Button buyButton = findViewById(R.id.buy_buy_btn);
         totalPrice = findViewById(R.id.total_price);
+
+        address = findViewById(R.id.edit_address);
+        phone = findViewById(R.id.edit_phone);
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -74,17 +80,29 @@ public class BuyActivity extends AppCompatActivity {
         buyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i=0; i<product.get("name").size(); i++) {
-                    Map<String, Object> data = new HashMap<>();
-                    data.put("buy", false);
-                    data.put("check", false);
 
-                    DB.collection("languages").document(product.get("name").get(i)).update(data);
+                if (address.getText().toString().getBytes().length != 0 && phone.getText().toString().getBytes().length != 0 ) {
+
+                    for (int i=0; i<product.get("name").size(); i++) {
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("buy", false);
+                        data.put("check", false);
+
+                        DB.collection("languages").document(product.get("name").get(i)).update(data);
+                    }
+
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(getApplicationContext(), "구매가 완료되었습니다", Toast.LENGTH_SHORT).show();
+
                 }
 
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                Toast.makeText(getApplicationContext(), "구매가 완료되었습니다", Toast.LENGTH_SHORT).show();
+                else {
+
+                    Toast.makeText(getApplicationContext(), "주소나 휴대폰 번호를 입력해주세요", Toast.LENGTH_SHORT).show();
+
+                }
+
             }
         });
 
