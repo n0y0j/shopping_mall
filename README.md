@@ -1,6 +1,6 @@
 # Code Market ( Java + FireStore )
 
-이 로젝트는 국민대학교 모바일 프로그래밍 강의를 바탕으로 제작하였습니다.
+이 프로젝트는 국민대학교 모바일 프로그래밍 강의를 바탕으로 제작하였습니다.
 
 ![캡처](https://user-images.githubusercontent.com/28584258/96588644-e234f480-131e-11eb-8aa3-b4cadaddd860.PNG)
 
