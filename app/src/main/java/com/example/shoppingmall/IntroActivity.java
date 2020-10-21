@@ -11,6 +11,7 @@ public class IntroActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
 
+        // 2초간 인트로 activity_intro layout을 띄운 후 MainActivity호 넘어간다
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override

@@ -52,6 +52,8 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteViewHo
         holder.price.setText(product.get("price").get(position));
         holder.check.setChecked(false);
 
+        // item의 checkBox가 true인지 false인지 확인하여 저장된 데이터를 업데이트 시킨다.
+        // check가 true인 아이템만 buy를 true로 바꿀 예정
         holder.check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -67,6 +69,8 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteViewHo
             }
         });
 
+        // 삭제버튼 클릭 시 item 삭제
+        // ( FavoriteActivity에서 favorite이 true인 데이터들만 가져오므로 false 값으로 바꾸면 무시함 )
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

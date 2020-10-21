@@ -41,9 +41,11 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // bottom LinearLayout은 평상시 안보이다, item click시 보임
         linearLayout = findViewById(R.id.linear_layout);
         linearLayout.setVisibility(View.GONE);
 
+        // recyclerView와 ViewHolder로 item들을 생성한 adapter를 연결시켜 activity_main layout을 완성시킨다.
         recyclerView = findViewById(R.id.main_recyclerview);
         LinearLayoutManager manager = new GridLayoutManager(getApplicationContext(),2);
 
@@ -54,20 +56,6 @@ public class MainActivity extends AppCompatActivity {
         favorite_btn = findViewById(R.id.favorite_btn);
         buy_btn = findViewById(R.id.buy_btn);
 
-        toolbar.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEvent.ACTION_UP:
-                        linearLayout.setVisibility(View.GONE);
-                        break;
-                    default:
-                        break;
-                }
-                return true;
-            }
-        });
     }
 
     // AsyncTask<doInBackground()의 변수 종류, onProgressUpdate()에서 사용할 ++변수 종류, onPostExecute()에서 사용할 변수종류>
@@ -93,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 // table -> tbodt -> tr 태그의 정보를 저장
                 Elements elements = doc.select("table tbody tr");
 
-                // 많이 사용되는 언어의 1위부터 15위까지의 정보만 저장
+                // 많이 사용되는 언어의 1위부터 20위까지의 정보만 저장
                 int count = 0;
                 for(Element elem : elements) {
                     if (count < 20) {
@@ -155,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         return product;
     }
 
+    // MainActivity가 처음 시작할 때를 제외하곤 이 코드가 실행된다.
     @Override
     protected void onResume() {
         super.onResume();

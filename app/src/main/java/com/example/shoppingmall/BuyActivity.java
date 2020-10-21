@@ -50,6 +50,7 @@ public class BuyActivity extends AppCompatActivity {
         address = findViewById(R.id.edit_address);
         phone = findViewById(R.id.edit_phone);
 
+        // 데이터를 FireStore에서 받아와 HashMap product가 저장할 때 까지의 시간을 지연시킨다.
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -62,6 +63,7 @@ public class BuyActivity extends AppCompatActivity {
             }
         },1000);
 
+        // BackButton 클릭 시 전 화면으로 되돌아간다.
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,6 +79,8 @@ public class BuyActivity extends AppCompatActivity {
             }
         });
 
+        // BuyButton 클릭 시 MainActivity로 이동한다.
+        // 주소, 전화번호 EditText가 비어있지 않아야한다.
         buyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,12 +118,14 @@ public class BuyActivity extends AppCompatActivity {
         final ArrayList<String> price = new ArrayList<String>();
         final ArrayList<String> image = new ArrayList<String>();
 
+        // FireStore의 langauages collection의 모든 문서들을 검사한다
         DB.collection("languages").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
 
+                        // buy 속성이 true인 것 들만 가져와 이름, 사진, 가격을 추가한다.
                         if (document.getData().get("buy").toString() == "true") {
                             String product_name = document.getId();
                             String product_price = document.getData().get("price").toString();

@@ -48,6 +48,7 @@ public class FavoriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
 
+        // 데이터를 FireStore에서 받아와 HashMap product가 저장할 때 까지의 시간을 지연시킨다.
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -57,7 +58,6 @@ public class FavoriteActivity extends AppCompatActivity {
                 manager = new GridLayoutManager(getApplicationContext(),1);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(manager);
-
             }
         },1000);
 
@@ -65,6 +65,7 @@ public class FavoriteActivity extends AppCompatActivity {
         buyButton = findViewById(R.id.favorite_buy_btn);
         homeButton = findViewById(R.id.favorite_home_btn);
 
+        // BackButton 클릭 시 전 화면으로 되돌아간다.
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +73,7 @@ public class FavoriteActivity extends AppCompatActivity {
             }
         });
 
+        // HomeButton 클릭 시 MainActivity로 되돌아간다.
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,6 +82,8 @@ public class FavoriteActivity extends AppCompatActivity {
             }
         });
 
+        // BuyButton 클릭 시 checkBox가 true인 item만 buy 속성을 true로 바꾼다.
+        // 그리고 BuyActivity로 이동
         buyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,12 +126,14 @@ public class FavoriteActivity extends AppCompatActivity {
         final ArrayList<String> price = new ArrayList<String>();
         final ArrayList<String> image = new ArrayList<String>();
 
+        // FireStore의 langauages collection의 모든 문서들을 검사한다
         DB.collection("languages").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
 
+                        // favorite 속성이 true인 것 들만 가져와 이름, 사진, 가격을 추가한다.
                         if (document.getData().get("favorite").toString() == "true") {
                             String product_name = document.getId();
                             String product_price = document.getData().get("price").toString();

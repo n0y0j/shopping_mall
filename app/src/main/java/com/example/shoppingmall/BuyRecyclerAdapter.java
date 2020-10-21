@@ -52,6 +52,8 @@ public class BuyRecyclerAdapter extends RecyclerView.Adapter<FavoriteViewHolder>
         holder.price.setText(product.get("price").get(position));
         holder.check.setChecked(false);
 
+        // item의 checkBox가 true인지 false인지 확인하여 총 값을 계산한다.
+        // true라면 item의 price를 총 값에 더하고, true->false로 변환 시 뺀다
         holder.check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -79,6 +81,7 @@ public class BuyRecyclerAdapter extends RecyclerView.Adapter<FavoriteViewHolder>
             }
         });
 
+        // 삭제버튼 클릭 item 삭제
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

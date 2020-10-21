@@ -30,8 +30,8 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
     Map<String, Object> data = new HashMap<>();
     Context context;
     List<CardView> cardViewList = new ArrayList<>();
-
     private HashMap<String, ArrayList<String>> product;
+
     // 프로그래밍 언어들의 로고가 순위별로 정렬
     private int[] image = {
             R.drawable.c, R.drawable.java, R.drawable.python, R.drawable.cpp, R.drawable.c_sharp,
@@ -107,6 +107,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
 
                 MainActivity.linearLayout.setVisibility(View.VISIBLE);
 
+                // 장바구니 버튼 클릭 시
                 MainActivity.favorite_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -116,8 +117,10 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
 
                         holder.favorite.setImageResource(R.drawable.favorite_icon);
 
+                        // 클릭한 아이템의 데이터를 업데이트 시킴
                         DB.collection("languages").document(holder.name.getText().toString()).update(data);
 
+                        // 장바구니 페이지로 이동할 지 안할 지 선택하는 alert문
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                         builder.setTitle("장바구니로 이동").setMessage("장바구니로 이동하시겠습니까?");
@@ -144,6 +147,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
                     }
                 });
 
+                // 구매 버튼 클릭 시
                 MainActivity.buy_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -151,6 +155,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainViewHolder> {
                         // buy을 true로 업데이트
                         data.put("buy", true);
 
+                        // 클릭한 아이템의 데이터를 업데이트 시킴
                         DB.collection("languages").document(product.get("name").get(position)).update(data);
 
                         MainActivity.linearLayout.setVisibility(View.GONE);
